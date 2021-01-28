@@ -1,6 +1,8 @@
 <?php
 
-class Notify
+namespace App\Adapter;
+
+class Notification
 {
     protected $username = '';
     protected $password = '';
@@ -22,27 +24,11 @@ class Notify
 
     protected function sendSMS($to, $from, $body)
     {
-        $twilio = new Services_Twilio($this->username, $this->password);
-
-        $message = $twilio->account->messages->sendMessage(
-            $from,
-            $to,
-            $body
-        );
-
-        return $message;
+        return ['send SMS Attempt' => [$to, $from, $body]];
     }
 
     protected function sendEmail($to, $from, $body, $subject)
     {
-        $sendgrid = new SendGrid('fake username2', 'fake password 2');
-        $email    = new SendGrid\Email();
-        $email->addTo($to)->
-            setFrom($from)->
-            setSubject($subject)->
-            setText($body)->
-            setHtml($body);
-
-        return $sendgrid->send($email);
+        return ['send Email Attempt' => [$to, $from, $body, $subject]];
     }
 }
